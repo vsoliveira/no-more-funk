@@ -16,7 +16,7 @@ public class NoMoreFunkApplication {
 		Actions.fillFormOrigem(driver);
 		Actions.fillFormInformacoes(driver);
 		
-		Thread.sleep(20000L);
+		Thread.sleep(5000L);
 		driver.quit();
 
 	}
