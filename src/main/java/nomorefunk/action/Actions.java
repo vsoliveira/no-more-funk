@@ -72,6 +72,8 @@ public class Actions {
 			.click();
 		driver.findElement(By.xpath(Elements.checkDeclaro))
 			.click();
+		driver.findElement(By.xpath(Elements.inputCaptcha))
+			.click();
 	}
 	
 	
