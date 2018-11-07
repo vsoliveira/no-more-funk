@@ -1,8 +1,8 @@
 package com.victor;
-import org.openqa.selenium.WebDriver;
 
 import com.victor.action.Actions;
 import com.victor.model.Driver;
+import org.openqa.selenium.WebDriver;
 
 public class NoMoreFunkApplication {
 	public static void main(String[] args) throws InterruptedException {

@@ -1,13 +1,11 @@
 package com.victor.model;
 
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.opera.OperaDriver;
 
 public class Driver {
 	

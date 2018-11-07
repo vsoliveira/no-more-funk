@@ -1,11 +1,10 @@
 package com.victor.action;
 
+import com.victor.element.Elements;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import com.victor.element.Elements;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -35,9 +34,7 @@ public class Actions {
 
         driver.findElement(By.xpath(Elements.btnProximoCadastro)).click();
 
-    }
-
-    ;
+    };
 
     public static void fillFormEndereco(WebDriver driver) {
         driver.findElement(By.xpath(Elements.inputCep))
@@ -58,9 +55,7 @@ public class Actions {
 
         driver.findElement(By.xpath(Elements.btnProximoEndereco)).click();
 
-    }
-
-    ;
+    };
 
     public static void fillFormOrigem(WebDriver driver) {
         driver.findElement(By.xpath(Elements.inputRadioLocalBarulho))
