@@ -1,8 +1,8 @@
-package nomorefunk;
+package com.victor;
 import org.openqa.selenium.WebDriver;
 
-import nomorefunk.action.Actions;
-import nomorefunk.model.Driver;
+import com.victor.action.Actions;
+import com.victor.model.Driver;
 
 public class NoMoreFunkApplication {
 	public static void main(String[] args) throws InterruptedException {
@@ -15,8 +15,12 @@ public class NoMoreFunkApplication {
 		Actions.fillFormEndereco(driver);
 		Actions.fillFormOrigem(driver);
 		Actions.fillFormInformacoes(driver);
-		
-		Thread.sleep(5000L);
+
+		for (int i = 0; i <= 100; i++) {
+			Actions.takeScreenshotCaptcha(driver);
+		}
+
+		//Thread.sleep(5000L);
 		driver.quit();
 
 	}

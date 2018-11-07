@@ -1,4 +1,4 @@
-package nomorefunk.element;
+package com.victor.element;
 
 public interface Elements {
 	
@@ -31,4 +31,7 @@ public interface Elements {
 	
 	String complemento = "Grupo de jovens ouvindo som alto tanto na residência quanto na rua. "
 			+ "Não é possível fazer contato com a viatura devido represalias dos moradores da comunidade";
+
+	String captcha = "//*[@id=\"CaptchaImage\"]";
+	String captchaRefresh = "/html/body//a[@href=\'#CaptchaImage\']";
 }

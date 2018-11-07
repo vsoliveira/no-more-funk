@@ -1,4 +1,4 @@
-package nomorefunk.model;
+package com.victor.model;
 
 import java.io.IOException;
 import java.io.InputStream;
