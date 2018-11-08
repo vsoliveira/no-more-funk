@@ -28,7 +28,7 @@ public class Driver {
 	
 	public Driver() {
 		System.setProperty("webdriver.gecko.driver", driversLocation().getProperty("webdriver.gecko.driver"));
-		System.setProperty("webdriver.chrome.driver", driversLocation().getProperty("webdriver.chrome.driver"));
+		//System.setProperty("webdriver.chrome.driver", driversLocation().getProperty("webdriver.chrome.driver"));
 		
 	}
 	

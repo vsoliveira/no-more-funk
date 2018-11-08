@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 public class Actions {
 
@@ -77,7 +78,8 @@ public class Actions {
 
     public static void takeScreenshotCaptcha(WebDriver driver) {
         WebElement element = driver.findElement(By.xpath(Elements.captcha));
-
+        JavascriptExecutor jse = (JavascriptExecutor) driver;
+        jse.executeScript("window.scrollBy(0, -250)", "");
         try {
 
             File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
@@ -90,14 +92,14 @@ public class Actions {
 
             BufferedImage elementScreenshot = fullImg.getSubimage(point.getX(), point.getY(), elementWidth, elementHeight);
 
-
             ImageIO.write(elementScreenshot, "png", screenshot);
             File screenshotLocation = new File(String.format("C:\\images\\%s.png", Math.random()));
             FileUtils.copyFile(screenshot, screenshotLocation);
+
             driver.findElement(By.xpath(Elements.captchaRefresh))
                     .click();
         } catch (Exception e) {
-
+            System.out.println(e);
         }
 
 
