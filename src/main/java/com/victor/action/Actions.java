@@ -1,6 +1,7 @@
 package com.victor.action;
 
 import com.victor.element.Elements;
+import com.victor.model.ApplicationProperties;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -77,6 +78,9 @@ public class Actions {
     }
 
     public static void takeScreenshotCaptcha(WebDriver driver) {
+
+        ApplicationProperties properties = new ApplicationProperties("application.properties");
+
         WebElement element = driver.findElement(By.xpath(Elements.captcha));
         JavascriptExecutor jse = (JavascriptExecutor) driver;
         jse.executeScript("window.scrollBy(0, -250)", "");
@@ -92,8 +96,9 @@ public class Actions {
 
             BufferedImage elementScreenshot = fullImg.getSubimage(point.getX(), point.getY(), elementWidth, elementHeight);
 
-            ImageIO.write(elementScreenshot, "png", screenshot);
-            File screenshotLocation = new File(String.format("C:\\images\\%s.png", Math.random()));
+            ImageIO.write(elementScreenshot, properties.getProperty("format.captchas.images"), screenshot);
+
+            File screenshotLocation = new File(String.format("%s\\%s.%s", properties.getProperty("path.captchas.images"),Math.random(), properties.getProperty("format.captchas.images")));
             FileUtils.copyFile(screenshot, screenshotLocation);
 
             driver.findElement(By.xpath(Elements.captchaRefresh))

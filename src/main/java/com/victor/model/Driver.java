@@ -27,12 +27,15 @@ public class Driver {
 
 	
 	public Driver() {
-		System.setProperty("webdriver.gecko.driver", driversLocation().getProperty("webdriver.gecko.driver"));
+
+		ApplicationProperties properties = new ApplicationProperties("application.properties");
+
+		System.setProperty("webdriver.gecko.driver", properties.getProperty("webdriver.gecko.driver"));
 		//System.setProperty("webdriver.chrome.driver", driversLocation().getProperty("webdriver.chrome.driver"));
 		
 	}
-	
-	private Properties driversLocation() {
+
+/*	private Properties driversLocation() {
 		ClassLoader classLoader = getClass().getClassLoader();
 		InputStream firefoxDriver = classLoader.getResourceAsStream("application.properties");
 		Properties prop = new Properties();
@@ -41,9 +44,9 @@ public class Driver {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return prop;
-		
-	}
-	
+
+	}*/
+
 }
