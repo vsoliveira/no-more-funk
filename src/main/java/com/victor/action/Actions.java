@@ -92,11 +92,10 @@ public class Actions {
             BufferedImage fullImg = ImageIO.read(screenshot);
 
 
-            //Point point = element.getLocation();
+            Point pointOld = element.getLocation();
 
-            Map<String, Object> jsLocation = (Map<String, Object>) getResultInJavaScript("return $('#CaptchaImage').position();", driver);
-
-            Map<String, BigDecimal> coordinates = extractResultFromJavaScript(jsLocation);
+//            Map<String, BigDecimal> coordinates = getResultInJavaScript("return $('#CaptchaImage').position();", driver);
+            Map<String, BigDecimal> coordinates = getResultInJavaScript("function offset(e){var t=e.position(),o=window.pageXOffset||document.documentElement.scrollLeft,n=window.pageYOffset||document.documentElement.scrollTop;return{top:t.top-n,left:t.left-o}}var element=$(\"#CaptchaImage\"); return offset(element);", driver);
 
             BigDecimal left = coordinates.get("left");
             BigDecimal top = coordinates.get("top");
@@ -125,10 +124,10 @@ public class Actions {
         jse.executeScript(command, "");
     }
 
-    private static Object getResultInJavaScript(String command, WebDriver driver) {
+    private static Map<String, BigDecimal> getResultInJavaScript(String command, WebDriver driver) {
         JavascriptExecutor jse = (JavascriptExecutor) driver;
-        jse.executeScript(command, "");
-        return jse.executeScript(command, "");
+        Map<String, Object> jsLocation = (Map<String, Object>) jse.executeScript(command, "");
+        return extractResultFromJavaScript(jsLocation);
     }
 
     private static Map<String, BigDecimal>  extractResultFromJavaScript(Map<String, Object> map) {
