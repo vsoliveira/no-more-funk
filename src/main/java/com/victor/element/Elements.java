@@ -31,7 +31,7 @@ public interface Elements {
 	
 	String complemento = "Grupo de jovens ouvindo som automotivo de volume elevado em via publica. "
 			+ "Residência possui uma caveira pintada no portão. "
-			+ "Não é possível fazer contato com a viatura devido represalias dos moradores da comunidade";
+			+ "Não é possível fazer contato com a viatura devido represálias dos moradores da comunidade";
 
 	String captcha = "//*[@id=\"CaptchaImage\"]";
 	String captchaRefresh = "/html/body//a[@href=\'#CaptchaImage\']";

@@ -10,6 +10,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class Actions {
@@ -82,14 +85,23 @@ public class Actions {
         ApplicationProperties properties = new ApplicationProperties("application.properties");
 
         WebElement element = driver.findElement(By.xpath(Elements.captcha));
-        JavascriptExecutor jse = (JavascriptExecutor) driver;
-        jse.executeScript("window.scrollBy(0, -250)", "");
+        executeJavaScript("window.scrollBy(0, -250)", driver);
         try {
 
             File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
             BufferedImage fullImg = ImageIO.read(screenshot);
 
-            Point point = element.getLocation();
+
+            //Point point = element.getLocation();
+
+            Map<String, Object> jsLocation = (Map<String, Object>) getResultInJavaScript("return $('#CaptchaImage').position();", driver);
+
+            Map<String, BigDecimal> coordinates = extractResultFromJavaScript(jsLocation);
+
+            BigDecimal left = coordinates.get("left");
+            BigDecimal top = coordinates.get("top");
+
+            Point point = new Point(left.toBigInteger().intValue(), top.toBigInteger().intValue());
 
             int elementWidth = element.getSize().getWidth();
             int elementHeight = element.getSize().getHeight();
@@ -98,7 +110,7 @@ public class Actions {
 
             ImageIO.write(elementScreenshot, properties.getProperty("format.captchas.images"), screenshot);
 
-            File screenshotLocation = new File(String.format("%s\\%s.%s", properties.getProperty("path.captchas.images"),Math.random(), properties.getProperty("format.captchas.images")));
+            File screenshotLocation = new File(String.format("%s\\%s.%s", properties.getProperty("path.captchas.images"), Math.random(), properties.getProperty("format.captchas.images")));
             FileUtils.copyFile(screenshot, screenshotLocation);
 
             driver.findElement(By.xpath(Elements.captchaRefresh))
@@ -106,9 +118,41 @@ public class Actions {
         } catch (Exception e) {
             System.out.println(e);
         }
-
-
     }
 
+    private static void executeJavaScript(String command, WebDriver driver) {
+        JavascriptExecutor jse = (JavascriptExecutor) driver;
+        jse.executeScript(command, "");
+    }
+
+    private static Object getResultInJavaScript(String command, WebDriver driver) {
+        JavascriptExecutor jse = (JavascriptExecutor) driver;
+        jse.executeScript(command, "");
+        return jse.executeScript(command, "");
+    }
+
+    private static Map<String, BigDecimal>  extractResultFromJavaScript(Map<String, Object> map) {
+
+        Map<String, BigDecimal> result = new HashMap<String, BigDecimal>();
+
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+
+            Object coordinate = entry.getValue();
+            if (coordinate instanceof Long) {
+                Long valor = (Long) entry.getValue();
+                result.put(entry.getKey(), new BigDecimal(valor));
+            } else if (coordinate instanceof Integer) {
+                Integer valor = (Integer) entry.getValue();
+                result.put(entry.getKey(), new BigDecimal(valor));
+            } else if (coordinate instanceof Double) {
+                Double valor = (Double) entry.getValue();
+                result.put(entry.getKey(), new BigDecimal(valor));
+            } else {
+                result.put(entry.getKey(), new BigDecimal(entry.toString()));
+            }
+            
+        }
+         return result;
+    }
 
 }
