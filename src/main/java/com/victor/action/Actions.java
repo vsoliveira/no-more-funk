@@ -54,9 +54,9 @@ public class Actions {
         });
 
         driver.findElement(By.xpath(Elements.inputEnderecoNumero))
-                .sendKeys("526");
+                .sendKeys("548");
         driver.findElement(By.xpath(Elements.inputEnderecoComplemento))
-                .sendKeys("B");
+                .sendKeys("");
 
         driver.findElement(By.xpath(Elements.btnProximoEndereco)).click();
 
@@ -78,6 +78,18 @@ public class Actions {
                 .click();
         driver.findElement(By.xpath(Elements.checkDeclaro))
                 .click();
+        driver.findElement(By.xpath(Elements.captchaInput))
+                .click();
+
+        (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.findElement(By.xpath(Elements.captchaInput)).getAttribute("value").length() == 5;
+            }
+        });
+
+        driver.findElement(By.xpath(Elements.btnEnviar))
+                .click();
+
     }
 
     public static void takeScreenshotCaptcha(WebDriver driver) {

@@ -16,11 +16,11 @@ public class NoMoreFunkApplication {
 		Actions.fillFormOrigem(driver);
 		Actions.fillFormInformacoes(driver);
 
-		for (int i = 0; i <= 100; i++) {
-			Actions.takeScreenshotCaptcha(driver);
-		}
+//		for (int i = 0; i <= 1000; i++) {
+//			Actions.takeScreenshotCaptcha(driver);
+//		}
 
-		//Thread.sleep(5000L);
+//		Thread.sleep(10000L);
 		driver.quit();
 
 	}
