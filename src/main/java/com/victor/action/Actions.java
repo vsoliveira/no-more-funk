@@ -39,7 +39,9 @@ public class Actions {
 
         driver.findElement(By.xpath(Elements.btnProximoCadastro)).click();
 
-    };
+    }
+
+    ;
 
     public static void fillFormEndereco(WebDriver driver) {
         driver.findElement(By.xpath(Elements.inputCep))
@@ -60,7 +62,9 @@ public class Actions {
 
         driver.findElement(By.xpath(Elements.btnProximoEndereco)).click();
 
-    };
+    }
+
+    ;
 
     public static void fillFormOrigem(WebDriver driver) {
         driver.findElement(By.xpath(Elements.inputRadioLocalBarulho))
@@ -81,15 +85,48 @@ public class Actions {
         driver.findElement(By.xpath(Elements.captchaInput))
                 .click();
 
-        (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.findElement(By.xpath(Elements.captchaInput)).getAttribute("value").length() == 5;
+
+        checkCaptcha(driver);
+
+    }
+
+    public static void checkCaptcha(WebDriver driver) {
+        if (driver.findElement(By.xpath(Elements.boxError)).isDisplayed()) {
+            driver.findElement(By.xpath(Elements.boxErrorMessage));
+            if (!driver.findElement(By.xpath(Elements.checkDeclaro)).isSelected()) {
+                driver.findElement(By.xpath(Elements.checkDeclaro))
+                        .click();
+                driver.findElement(By.xpath(Elements.captchaInput))
+                        .click();
             }
-        });
 
-        driver.findElement(By.xpath(Elements.btnEnviar))
-                .click();
+            tryFillCaptcha(driver);
+        } else {
+            tryFillCaptcha(driver);
+        }
 
+
+    }
+
+    public static void tryFillCaptcha(WebDriver driver) {
+        takeScreenshotCaptcha(driver);
+        try {
+            (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
+                public Boolean apply(WebDriver d) {
+                    return d.findElement(By.xpath(Elements.captchaInput)).getAttribute("value").length() == 5;
+                }
+            });
+
+            driver.findElement(By.xpath(Elements.btnEnviar))
+                    .click();
+
+            if (!driver.findElement(By.xpath(Elements.popUpSucess)).isDisplayed()) {
+                checkCaptcha(driver);
+            }
+        } catch (TimeoutException e) {
+            System.out.println("Captcha não preenchido.");
+            checkCaptcha(driver);
+        }
     }
 
     public static void takeScreenshotCaptcha(WebDriver driver) {
@@ -124,8 +161,8 @@ public class Actions {
             File screenshotLocation = new File(String.format("%s\\%s.%s", properties.getProperty("path.captchas.images"), Math.random(), properties.getProperty("format.captchas.images")));
             FileUtils.copyFile(screenshot, screenshotLocation);
 
-            driver.findElement(By.xpath(Elements.captchaRefresh))
-                    .click();
+            //driver.findElement(By.xpath(Elements.captchaRefresh))
+            //        .click();
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -142,7 +179,7 @@ public class Actions {
         return extractResultFromJavaScript(jsLocation);
     }
 
-    private static Map<String, BigDecimal>  extractResultFromJavaScript(Map<String, Object> map) {
+    private static Map<String, BigDecimal> extractResultFromJavaScript(Map<String, Object> map) {
 
         Map<String, BigDecimal> result = new HashMap<String, BigDecimal>();
 
@@ -161,9 +198,9 @@ public class Actions {
             } else {
                 result.put(entry.getKey(), new BigDecimal(entry.toString()));
             }
-            
+
         }
-         return result;
+        return result;
     }
 
 }

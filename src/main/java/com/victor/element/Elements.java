@@ -37,4 +37,9 @@ public interface Elements {
 	String captchaInput = "//*[@id=\"CaptchaInputText\"]";
 	String captchaRefresh = "/html/body//a[@href=\'#CaptchaImage\']";
 
+	String boxError = "//*[@id=\"mensagemErroInformacoes\"]";
+	String boxErrorMessage = "//*[@id=\"textoErroInformacoes\"]/b";
+
+	String popUpSucess = "//*[@id=\"dialogMensagemPopUp\"]";
+
 }
