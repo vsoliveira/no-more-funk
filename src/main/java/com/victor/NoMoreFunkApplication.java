@@ -5,8 +5,10 @@ import com.victor.model.Driver;
 import com.victor.service.CaptchaBreakerServices;
 import org.openqa.selenium.WebDriver;
 
+import java.io.FileNotFoundException;
+
 public class NoMoreFunkApplication {
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, FileNotFoundException {
 
 		CaptchaBreakerServices.getCaptcha();
 
