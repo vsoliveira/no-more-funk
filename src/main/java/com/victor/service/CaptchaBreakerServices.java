@@ -2,43 +2,34 @@ package com.victor.service;
 
 import com.victor.util.HttpUtil;
 import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
 
-import java.io.*;
+import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.net.NoRouteToHostException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CaptchaBreakerServices {
 
-    public static void getCaptcha() throws FileNotFoundException {
+
+    public static String solveCaptcha(String path) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost request = new HttpPost("http://127.0.0.1/gsa_test.gsa");
-        File f = new File("C:\\captchas\\policiamilitar.sp.gov.br\\kpmc8.png");
+        File f = new File(path);
+
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
         builder.addBinaryBody("file", f, ContentType.DEFAULT_BINARY, f.getName());
-//        builder.addTextBody("file", "C:\\captchas\\policiamilitar.sp.gov.br\\kpmc8.png", ContentType.TEXT_PLAIN);
 
-
-//        try {
-//            builder.addBinaryBody("file", new FileInputStream(f), ContentType.APPLICATION_OCTET_STREAM, f.getName());
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//
         HttpEntity multipart = builder.build();
-
 
         CloseableHttpResponse response = null;
         try {
@@ -46,10 +37,15 @@ public class CaptchaBreakerServices {
             response = httpClient.execute(request);
             if (response.getStatusLine().getStatusCode() == 200) {
                 String result = HttpUtil.convertStreamToString(response.getEntity().getContent());
-                System.out.println(result);
-            } else {
+                Pattern regexResult = Pattern.compile("((?<=\\::\\ )\\w*)");
 
+                Matcher matcher = regexResult.matcher(result);
+
+                if (matcher.find()) {
+                    return matcher.group(0);
+                }
             }
+
         } catch (UnsupportedEncodingException e) {
         } catch (NoRouteToHostException e) {
         } catch (UnknownHostException e) {
@@ -57,7 +53,7 @@ public class CaptchaBreakerServices {
         } finally {
             HttpUtil.closeHttpEntity(response);
         }
-
+        return "";
     }
 
 

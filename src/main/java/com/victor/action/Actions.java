@@ -2,6 +2,7 @@ package com.victor.action;
 
 import com.victor.element.Elements;
 import com.victor.model.ApplicationProperties;
+import com.victor.service.CaptchaBreakerServices;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -13,7 +14,6 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class Actions {
 
@@ -109,7 +109,8 @@ public class Actions {
     }
 
     public static void tryFillCaptcha(WebDriver driver) {
-        takeScreenshotCaptcha(driver);
+        driver.findElement(By.xpath(Elements.captchaInput)).sendKeys(CaptchaBreakerServices.solveCaptcha(takeScreenshotCaptcha(driver)));
+
         try {
             (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
                 public Boolean apply(WebDriver d) {
@@ -129,12 +130,17 @@ public class Actions {
         }
     }
 
-    public static void takeScreenshotCaptcha(WebDriver driver) {
+    public static String takeScreenshotCaptcha(WebDriver driver) {
 
         ApplicationProperties properties = new ApplicationProperties("application.properties");
 
         WebElement element = driver.findElement(By.xpath(Elements.captcha));
         executeJavaScript("window.scrollBy(0, -250)", driver);
+
+        if (driver.findElement(By.xpath(Elements.boxError)).isDisplayed()) {
+            executeJavaScript("window.scrollBy(0, 250)", driver);
+        }
+
         try {
 
             File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
@@ -163,8 +169,10 @@ public class Actions {
 
             //driver.findElement(By.xpath(Elements.captchaRefresh))
             //        .click();
+            return screenshotLocation.getPath();
         } catch (Exception e) {
             System.out.println(e);
+            return null;
         }
     }
 
