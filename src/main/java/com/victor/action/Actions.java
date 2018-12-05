@@ -2,6 +2,7 @@ package com.victor.action;
 
 import com.victor.element.Elements;
 import com.victor.model.ApplicationProperties;
+import com.victor.model.Captcha;
 import com.victor.service.CaptchaBreakerServices;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
@@ -109,8 +110,14 @@ public class Actions {
     }
 
     public static void tryFillCaptcha(WebDriver driver) {
-        driver.findElement(By.xpath(Elements.captchaInput)).sendKeys(CaptchaBreakerServices.solveCaptcha(takeScreenshotCaptcha(driver)));
+        Captcha captcha = CaptchaBreakerServices.solveCaptcha(takeScreenshotCaptcha(driver));
 
+        if (captcha.isSolved()) {
+            saveCaptchaImage(captcha);
+            driver.findElement(By.xpath(Elements.captchaInput)).sendKeys(captcha.getText());
+        } else {
+            saveCaptchaImage(captcha);
+        }
         try {
             (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
                 public Boolean apply(WebDriver d) {
@@ -125,8 +132,22 @@ public class Actions {
                 checkCaptcha(driver);
             }
         } catch (TimeoutException e) {
-            System.out.println("Captcha não preenchido.");
+            System.out.println("Captcha input is blank");
             checkCaptcha(driver);
+        }
+    }
+
+    private static void saveCaptchaImage(Captcha captcha) {
+        if (!"".equals(captcha.getText())) {
+            File oldfile =new File(captcha.getPathImage());
+
+            File newfile =new File(captcha.getPathImage().replaceAll("([^\\\\]+)(?=\\.\\w+$)", captcha.getText()));
+
+            if(oldfile.renameTo(newfile)){
+                System.out.println("Rename succesful");
+            }else{
+                System.out.println("Rename failed");
+            }
         }
     }
 

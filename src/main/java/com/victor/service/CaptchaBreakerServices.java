@@ -1,5 +1,6 @@
 package com.victor.service;
 
+import com.victor.model.Captcha;
 import com.victor.util.HttpUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -20,7 +21,8 @@ import java.util.regex.Pattern;
 public class CaptchaBreakerServices {
 
 
-    public static String solveCaptcha(String path) {
+    public static Captcha solveCaptcha(String path) {
+        Captcha captcha = new Captcha("",path,false);
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost request = new HttpPost("http://127.0.0.1/gsa_test.gsa");
         File f = new File(path);
@@ -42,7 +44,8 @@ public class CaptchaBreakerServices {
                 Matcher matcher = regexResult.matcher(result);
 
                 if (matcher.find()) {
-                    return matcher.group(0);
+                    captcha.setSolved(true);
+                    captcha.setText(matcher.group(0));
                 }
             }
 
@@ -53,7 +56,7 @@ public class CaptchaBreakerServices {
         } finally {
             HttpUtil.closeHttpEntity(response);
         }
-        return "";
+        return captcha;
     }
 
 
