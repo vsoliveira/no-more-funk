@@ -5,6 +5,7 @@ import com.victor.model.ApplicationProperties;
 import com.victor.model.Captcha;
 import com.victor.service.CaptchaBreakerServices;
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -17,6 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Actions {
+
+    final static Logger logger = Logger.getLogger(Actions.class);
 
     protected Actions() {
 
@@ -110,8 +113,8 @@ public class Actions {
     }
 
     public static void tryFillCaptcha(WebDriver driver) {
-        Captcha captcha = CaptchaBreakerServices.solveCaptcha(takeScreenshotCaptcha(driver));
-
+        //Captcha captcha = CaptchaBreakerServices.solveCaptcha(takeScreenshotCaptcha(driver));
+        Captcha captcha = new Captcha("","",false);
         if (captcha.isSolved()) {
             saveCaptchaImage(captcha);
             driver.findElement(By.xpath(Elements.captchaInput)).sendKeys(captcha.getText());
@@ -132,7 +135,9 @@ public class Actions {
                 checkCaptcha(driver);
             }
         } catch (TimeoutException e) {
-            System.out.println("Captcha input is blank");
+            logger.info("Captcha input is blank");
+            driver.findElement(By.xpath(Elements.captchaRefresh))
+                    .click();
             checkCaptcha(driver);
         }
     }
@@ -144,9 +149,9 @@ public class Actions {
             File newfile =new File(captcha.getPathImage().replaceAll("([^\\\\]+)(?=\\.\\w+$)", captcha.getText()));
 
             if(oldfile.renameTo(newfile)){
-                System.out.println("Rename succesful");
+                logger.info("Rename succesful");
             }else{
-                System.out.println("Rename failed");
+                logger.info("Rename failed");
             }
         }
     }
@@ -188,11 +193,10 @@ public class Actions {
             File screenshotLocation = new File(String.format("%s\\%s.%s", properties.getProperty("path.captchas.images"), Math.random(), properties.getProperty("format.captchas.images")));
             FileUtils.copyFile(screenshot, screenshotLocation);
 
-            //driver.findElement(By.xpath(Elements.captchaRefresh))
-            //        .click();
+
             return screenshotLocation.getPath();
         } catch (Exception e) {
-            System.out.println(e);
+            logger.error(e);
             return null;
         }
     }

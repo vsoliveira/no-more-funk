@@ -11,12 +11,15 @@ public class NoMoreFunkApplication {
 
 		Driver drivers = new Driver();
 		WebDriver driver = drivers.getFirefox();
-		driver.get("http://www2.policiamilitar.sp.gov.br/ocorrenciaweb");
 
-		Actions.fillFormCadastro(driver);
-		Actions.fillFormEndereco(driver);
-		Actions.fillFormOrigem(driver);
-		Actions.fillFormInformacoes(driver);
+		for (int i = 0; i <= 100; i++) {
+			driver.get("http://www2.policiamilitar.sp.gov.br/ocorrenciaweb");
+
+			Actions.fillFormCadastro(driver);
+			Actions.fillFormEndereco(driver);
+			Actions.fillFormOrigem(driver);
+			Actions.fillFormInformacoes(driver);
+		}
 
 		driver.quit();
 
