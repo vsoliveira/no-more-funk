@@ -29,8 +29,8 @@ public interface Elements {
 
 	String imgLupa = "/html/body/div[1]/form/div[2]/div/div[3]/div[8]/div[1]/img";
 
-	String complemento = "Grupo de pessoas ouvindo som automotivo de volume elevado em via publica. "
-			+ "Som provêm de um GM/ASTRA HATCH 5P - 2002 - 2003 - Prata, PLACA AKR-8657"
+	String complemento = "Residência com caixa de som posta na rua tocando musica de volume elevadissímo. " +
+			"Residência de azulejo escuro com desenhos em formato de X repetidos. "
 			+ "Não é possível fazer contato com a viatura devido represálias dos moradores da comunidade";
 
 	String captcha = "//*[@id=\"CaptchaImage\"]";

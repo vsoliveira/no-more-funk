@@ -31,18 +31,4 @@ public class Driver {
 		
 	}
 
-/*	private Properties driversLocation() {
-		ClassLoader classLoader = getClass().getClassLoader();
-		InputStream firefoxDriver = classLoader.getResourceAsStream("application.properties");
-		Properties prop = new Properties();
-		try {
-			prop.load(firefoxDriver);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return prop;
-
-	}*/
-
 }
