@@ -113,8 +113,8 @@ public class Actions {
     }
 
     public static void tryFillCaptcha(WebDriver driver) {
-        Captcha captcha = CaptchaBreakerServices.solveCaptcha(takeScreenshotCaptcha(driver));
-
+        //Captcha captcha = CaptchaBreakerServices.solveCaptcha(takeScreenshotCaptcha(driver));
+        Captcha captcha = new Captcha("","",false);
         if (captcha.isSolved()) {
             saveCaptchaImage(captcha);
             driver.findElement(By.xpath(Elements.captchaInput)).sendKeys(captcha.getText());
