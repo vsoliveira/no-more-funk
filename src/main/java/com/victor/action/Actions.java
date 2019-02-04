@@ -27,19 +27,19 @@ public class Actions {
 
     public static void fillFormCadastro(WebDriver driver) {
         driver.findElement(By.xpath(Elements.inputNome))
-                .sendKeys("Victor Samuel de Oliveira Silva");
+                .sendKeys("*");
         driver.findElement(By.xpath(Elements.inputCpf))
-                .sendKeys(Keys.HOME + "38862802846");
+                .sendKeys(Keys.HOME + "*");
         driver.findElement(By.xpath(Elements.inputRg))
-                .sendKeys("422690478");
+                .sendKeys("*");
         driver.findElement(By.xpath(Elements.inputEmail))
-                .sendKeys("victorsasilva@yahoo.com.br");
+                .sendKeys("*");
         driver.findElement(By.xpath(Elements.inputConfirmaEmail))
-                .sendKeys("victorsasilva@yahoo.com.br");
+                .sendKeys("*");
         driver.findElement(By.xpath(Elements.inputDdd))
-                .sendKeys("11");
+                .sendKeys("*");
         driver.findElement(By.xpath(Elements.inputTelefone))
-                .sendKeys("966112236");
+                .sendKeys("*");
 
         driver.findElement(By.xpath(Elements.btnProximoCadastro)).click();
 
@@ -49,7 +49,7 @@ public class Actions {
 
     public static void fillFormEndereco(WebDriver driver) {
         driver.findElement(By.xpath(Elements.inputCep))
-                .sendKeys(Keys.HOME + "07097140");
+                .sendKeys(Keys.HOME + "*");
 
         driver.findElement(By.xpath(Elements.imgLupa)).click();
 
@@ -60,7 +60,7 @@ public class Actions {
         });
 
         driver.findElement(By.xpath(Elements.inputEnderecoNumero))
-                .sendKeys("548");
+                .sendKeys("*");
         driver.findElement(By.xpath(Elements.inputEnderecoComplemento))
                 .sendKeys("");
 
