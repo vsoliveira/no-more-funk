@@ -3,9 +3,9 @@ package com.victor.action;
 import com.victor.element.Elements;
 import com.victor.model.ApplicationProperties;
 import com.victor.model.Captcha;
-import com.victor.service.CaptchaBreakerServices;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class Actions {
 
-    final static Logger logger = Logger.getLogger(Actions.class);
+    final static Logger logger = LogManager.getLogger(Actions.class);
 
     protected Actions() {
 
