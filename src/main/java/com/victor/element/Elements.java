@@ -16,8 +16,15 @@ public interface Elements {
 	String inputEnderecoBairroHidden = "//*[@id=\"hfCodigoBairro\"]";
 	String inputComplemento = "//*[@id=\"textoComplemento\"]";
 
-	String inputRadioLocalBarulho = "//*[@id=\"Pergunta_1\"]/div[3]/label/child::*";
-	String inputRadioMotivo = "//*[@id=\"Pergunta_7\"]/div[3]/label/child::*";
+	String inputRadioLocalBarulhoViaPublica = "//*[@id=\"Pergunta_1\"]/div[2]/label/child::*";
+	String inputRadioMotivoAglomeracaoDePessoas = "//*[@id=\"Pergunta_2\"]/div[7]/label/child::*";
+	String inputRadioQtdPessoasAte50 = "//*[@id=\"Pergunta_4\"]/div[2]/label/child::*";
+
+
+
+	String inputRadioLocalBarulhoResidencia = "//*[@id=\"Pergunta_1\"]/div[3]/label/child::*";
+	String inputRadioMotivoOutro = "//*[@id=\"Pergunta_7\"]/div[6]/label/child::*";
+	String inputRadioMotivoMusica = "//*[@id=\"Pergunta_7\"]/div[3]/label/child::*";
 	String inputRadioNao = "//*[@id=\"radioContatoNao\"]";
 
 	String checkDeclaro = "//*[@id=\"checkDeclaracao\"]";
@@ -29,9 +36,8 @@ public interface Elements {
 
 	String imgLupa = "/html/body/div[1]/form/div[2]/div/div[3]/div[8]/div[1]/img";
 
-	String complemento = "Residência com caixa de som posta na rua tocando musica de volume elevadissímo. " +
-			"Residência de azulejo escuro com desenhos em formato de X repetidos. "
-			+ "Não é possível fazer contato com a viatura devido represálias dos moradores da comunidade";
+	String complemento = "Grupo de 5 individuos, 4 homens e 1 mulher, sentados na rua conversando em tom elevado e se embriagando, prejudicando circulação de moradores e prejudicando a paz pública"
+			+ " Não é possível fazer contato com a viatura devido represálias dos moradores";
 
 	String captcha = "//*[@id=\"CaptchaImage\"]";
 	String captchaInput = "//*[@id=\"CaptchaInputText\"]";
