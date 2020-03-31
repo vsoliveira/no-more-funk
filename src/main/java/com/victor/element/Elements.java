@@ -18,6 +18,7 @@ public interface Elements {
 
 	String inputRadioLocalBarulhoViaPublica = "//*[@id=\"Pergunta_1\"]/div[2]/label/child::*";
 	String inputRadioMotivoAglomeracaoDePessoas = "//*[@id=\"Pergunta_2\"]/div[7]/label/child::*";
+    String inputRadioMotivoAparelhoDeSom = "//*[@id=\"Pergunta_2\"]/div[3]/label/child::*";
 	String inputRadioQtdPessoasAte50 = "//*[@id=\"Pergunta_4\"]/div[2]/label/child::*";
 
 
@@ -36,7 +37,7 @@ public interface Elements {
 
 	String imgLupa = "/html/body/div[1]/form/div[2]/div/div[3]/div[8]/div[1]/img";
 
-	String complemento = "Grupo de 5 individuos, 4 homens e 1 mulher, sentados na rua conversando em tom elevado e se embriagando, prejudicando circulação de moradores e prejudicando a paz pública"
+	String complemento = "Unico individuo ouvindo som em seu veiculo na rua, VW GOL MI/1998, placa ctz 3620, cor vermellha"
 			+ " Não é possível fazer contato com a viatura devido represálias dos moradores";
 
 	String captcha = "//*[@id=\"CaptchaImage\"]";
