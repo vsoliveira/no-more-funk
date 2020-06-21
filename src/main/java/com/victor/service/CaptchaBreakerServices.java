@@ -24,7 +24,7 @@ public class CaptchaBreakerServices {
     public static Captcha solveCaptcha(String path) {
         Captcha captcha = new Captcha("",path,false);
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpPost request = new HttpPost("http://127.0.0.1/gsa_test.gsa");
+        HttpPost request = new HttpPost("http://192.168.15.200/gsa_test.gsa");
         File f = new File(path);
 
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
@@ -39,7 +39,9 @@ public class CaptchaBreakerServices {
             response = httpClient.execute(request);
             if (response.getStatusLine().getStatusCode() == 200) {
                 String result = HttpUtil.convertStreamToString(response.getEntity().getContent());
-                Pattern regexResult = Pattern.compile("((?<=\\::\\ )\\w*)");
+
+//                Pattern regexResult = Pattern.compile("((?<=\\::\\ )\\w*)");
+                Pattern regexResult = Pattern.compile("((?<=\\\">)\\w*)");
 
                 Matcher matcher = regexResult.matcher(result);
 

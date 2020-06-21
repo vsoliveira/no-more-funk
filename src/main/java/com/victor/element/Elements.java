@@ -37,7 +37,7 @@ public interface Elements {
 
 	String imgLupa = "/html/body/div[1]/form/div[2]/div/div[3]/div[8]/div[1]/img";
 
-	String complemento = "Unico individuo ouvindo som em seu veiculo na rua, VW GOL MI/1998, placa ctz 3620, cor vermellha"
+	String complemento = "Grupo de 10 indivíduos. Uso livre de drogas, carro placa DEB-4015, GM CORSA MILENIUM, 2001, CINZA com som elevado na rua."
 			+ " Não é possível fazer contato com a viatura devido represálias dos moradores";
 
 	String captcha = "//*[@id=\"CaptchaImage\"]";

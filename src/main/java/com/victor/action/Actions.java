@@ -3,6 +3,7 @@ package com.victor.action;
 import com.victor.element.Elements;
 import com.victor.model.ApplicationProperties;
 import com.victor.model.Captcha;
+import com.victor.service.CaptchaBreakerServices;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,19 +28,19 @@ public class Actions {
 
     public static void fillFormCadastro(WebDriver driver) {
         driver.findElement(By.xpath(Elements.inputNome))
-                .sendKeys("*");
+                .sendKeys("Victor Samuel de Oliveira Silva");
         driver.findElement(By.xpath(Elements.inputCpf))
-                .sendKeys(Keys.HOME + "*");
+                .sendKeys(Keys.HOME + "38862802846");
         driver.findElement(By.xpath(Elements.inputRg))
-                .sendKeys("*");
+                .sendKeys("422690478");
         driver.findElement(By.xpath(Elements.inputEmail))
-                .sendKeys("*");
+                .sendKeys("brunoguios-victor@yahoo.com");
         driver.findElement(By.xpath(Elements.inputConfirmaEmail))
-                .sendKeys("*");
+                .sendKeys("brunoguios-victor@yahoo.com");
         driver.findElement(By.xpath(Elements.inputDdd))
-                .sendKeys("*");
+                .sendKeys("11");
         driver.findElement(By.xpath(Elements.inputTelefone))
-                .sendKeys("*");
+                .sendKeys("966112236");
 
         driver.findElement(By.xpath(Elements.btnProximoCadastro)).click();
 
@@ -49,7 +50,7 @@ public class Actions {
 
     public static void fillFormEndereco(WebDriver driver) {
         driver.findElement(By.xpath(Elements.inputCep))
-                .sendKeys(Keys.HOME + "*");
+                .sendKeys(Keys.HOME + "07097140");
 
         driver.findElement(By.xpath(Elements.imgLupa)).click();
 
@@ -60,7 +61,7 @@ public class Actions {
         });
 
         driver.findElement(By.xpath(Elements.inputEnderecoNumero))
-                .sendKeys("*");
+                .sendKeys("548");
         driver.findElement(By.xpath(Elements.inputEnderecoComplemento))
                 .sendKeys("");
 
@@ -71,9 +72,11 @@ public class Actions {
     ;
 
     public static void fillFormOrigem(WebDriver driver) {
-        driver.findElement(By.xpath(Elements.inputRadioLocalBarulho))
+        driver.findElement(By.xpath(Elements.inputRadioLocalBarulhoViaPublica))
                 .click();
-        driver.findElement(By.xpath(Elements.inputRadioMotivo))
+        driver.findElement(By.xpath(Elements.inputRadioMotivoAglomeracaoDePessoas))
+                .click();
+        driver.findElement(By.xpath(Elements.inputRadioQtdPessoasAte50))
                 .click();
 
         driver.findElement(By.xpath(Elements.btnProximoOrigem)).click();
@@ -113,8 +116,9 @@ public class Actions {
     }
 
     public static void tryFillCaptcha(WebDriver driver) {
-        //Captcha captcha = CaptchaBreakerServices.solveCaptcha(takeScreenshotCaptcha(driver));
-        Captcha captcha = new Captcha("","",false);
+//        String s = takeScreenshotCaptcha(driver);
+//        Captcha captcha = CaptchaBreakerServices.solveCaptcha(takeScreenshotCaptcha(driver));
+        Captcha captcha = new Captcha("", "", false);
         if (captcha.isSolved()) {
             saveCaptchaImage(captcha);
             driver.findElement(By.xpath(Elements.captchaInput)).sendKeys(captcha.getText());
@@ -144,13 +148,13 @@ public class Actions {
 
     private static void saveCaptchaImage(Captcha captcha) {
         if (!"".equals(captcha.getText())) {
-            File oldfile =new File(captcha.getPathImage());
+            File oldfile = new File(captcha.getPathImage());
 
-            File newfile =new File(captcha.getPathImage().replaceAll("([^\\\\]+)(?=\\.\\w+$)", captcha.getText()));
+            File newfile = new File(captcha.getPathImage().replaceAll("([^\\\\]+)(?=\\.\\w+$)", captcha.getText()));
 
-            if(oldfile.renameTo(newfile)){
+            if (oldfile.renameTo(newfile)) {
                 logger.info("Rename succesful");
-            }else{
+            } else {
                 logger.info("Rename failed");
             }
         }
@@ -161,10 +165,10 @@ public class Actions {
         ApplicationProperties properties = new ApplicationProperties("application.properties");
 
         WebElement element = driver.findElement(By.xpath(Elements.captcha));
-        executeJavaScript("window.scrollBy(0, -250)", driver);
+        executeJavaScript("window.scrollTo(0, -250)", driver);
 
         if (driver.findElement(By.xpath(Elements.boxError)).isDisplayed()) {
-            executeJavaScript("window.scrollBy(0, 250)", driver);
+            executeJavaScript("window.scrollTo(0, 250)", driver);
         }
 
         try {
@@ -172,27 +176,30 @@ public class Actions {
             File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
             BufferedImage fullImg = ImageIO.read(screenshot);
 
+            Map<String, BigDecimal> coordinates = getResultInJavaScript("function offset(t){let e=t.getBoundingClientRect();return{top:e.y,left:e.x}}; let img = document.getElementById('CaptchaImage'); return offset(img);", driver);
 
-            Point pointOld = element.getLocation();
 
-//            Map<String, BigDecimal> coordinates = getResultInJavaScript("return $('#CaptchaImage').position();", driver);
-            Map<String, BigDecimal> coordinates = getResultInJavaScript("function offset(e){var t=e.position(),o=window.pageXOffset||document.documentElement.scrollLeft,n=window.pageYOffset||document.documentElement.scrollTop;return{top:t.top-n,left:t.left-o}}var element=$(\"#CaptchaImage\"); return offset(element);", driver);
-
-            BigDecimal left = coordinates.get("left");
-            BigDecimal top = coordinates.get("top");
+            BigDecimal left = coordinates.get("left").add(BigDecimal.valueOf(109));
+            BigDecimal top = BigDecimal.ZERO;
+            if (driver.findElement(By.xpath(Elements.boxError)).isDisplayed()) {
+                top = coordinates.get("top").add(BigDecimal.valueOf(116));
+            } else {
+                top = coordinates.get("top").add(BigDecimal.valueOf(130));
+            }
 
             Point point = new Point(left.toBigInteger().intValue(), top.toBigInteger().intValue());
 
-            int elementWidth = element.getSize().getWidth();
-            int elementHeight = element.getSize().getHeight();
+            int elementWidth = element.getSize().getWidth() + 50;
+            int elementHeight = element.getSize().getHeight() + 20;
 
+            logger.error("x: {}; y: {}", point.getX(), point.getY());
             BufferedImage elementScreenshot = fullImg.getSubimage(point.getX(), point.getY(), elementWidth, elementHeight);
 
-            ImageIO.write(elementScreenshot, properties.getProperty("format.captchas.images"), screenshot);
+            String imgFormat = properties.getProperty("format.captchas.images");
+            String pathToSaveImages = properties.getProperty("path.captchas.images");
 
-            File screenshotLocation = new File(String.format("%s\\%s.%s", properties.getProperty("path.captchas.images"), Math.random(), properties.getProperty("format.captchas.images")));
-            FileUtils.copyFile(screenshot, screenshotLocation);
-
+            File screenshotLocation = new File(String.format("%s\\%s.%s", pathToSaveImages, Math.random(), imgFormat));
+            ImageIO.write(elementScreenshot, imgFormat, screenshotLocation);
 
             return screenshotLocation.getPath();
         } catch (Exception e) {
